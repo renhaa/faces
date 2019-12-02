@@ -1,0 +1,64 @@
+\chapter{Introduction}
+
+
+A distinction between machine learning models are that between \emph{disciminative} and \emph{generative} models.
+
+In discriminative models we assign a label to a datapoint. For example given an image, which category does it belong to.
+
+We can distinguish two main types of generative models: likelihood based models, which include Variational Autoencoders (VAEs) and
+implicit models such as Generative Adversarial Networks (GANs) \cite{vqvae2}
+
+In this paper we will compare these two methods while exploring different architectural implementation along the way.
+
+To constrain our exploration we will consider synthesis of human faces and predominantly review literature related to face synthesis.
+
+\section{Generative Adversarial Networks.}
+GANs have been shown to be able to create be able to generate photo realistic images of human faces.\cite{progan}
+
+There has been proposed several improvements and variations of the original GAN architecture. In the original paper from Goodfellow discriminator and generator architectures was a multilayer perceptrons.\cite{gan}
+
+In \textit"{Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks"}(2015) (DCGAN)\cite{dcgan} the authors outlines a set of guidelines to  improve the training stability of GANs among them are using Convolutional layers, using the RELU activation in all layers i the generator except in the output layer which uses $\tanh$. In the distriminator the actication function is  the LeakyRELU activation which is defined as
+\begin{align}
+  \text{LeakyRELU}(x) =
+  \begin{cases}
+    x & \text{if}\quad x\geq0\\
+    0.1x & \text{if}\quad x<0
+  \end{cases}
+\end{align}
+where the "normal" RELU just outputs $0$ for $x<0$. The paper also proposes to do batch normalization in both the generator and the discriminator and to replace any pooling layers with strided convolutions. Batch normalization means that we normalize every input feature of a layer to have zero mean and unit variance.\footnote{\url{https://sthalles.github.io/advanced_gans/}}. A stride in a convolutional layer defines the distance between the spatial locations where the convolution kernel is applied.
+
+In SA-GAN\cite{sagan}
+
+In the paper \textit{"Progressive Growing of GANs for Improved Quality, Stability, and Variation"}\cite{progan} the authors used GANs to generate photorealistic images from CelebA-HQ a high quality version of the original CelebA dataset.\cite{celebA}. This work also uses convolutional layers and the main improvement is to progressively grow the generated images starting from a low resolution and then gradually add more layers to the generator and discriminator networks to produce higher resolution images.
+
+In BigGAN \cite{biggan} the authors find progressive growing is unnecessary even for the largest images they considered which was 512 by 512 color images.
+
+In \textit{A Style-Based Generator Architecture for Generative Adversarial Networks}(2018)\cite{stylegan} the authors improved the Progressive Gan model by including elements from the style transfer literature. Particularly instead of feeding the latent vector $z\in\mathcal{Z}$ directly into the generator via a fully connected layers, StyleGAN introduces a non-linear mapping network $f:\mathcal{Z}\to\mathcal{W}$ which encoded the input latent vector $z$ into an intermediate vector $w$.
+
+The vector $w$ then controls the generator through adaptive instance normalization (AdaIN) at each convolution layer.
+AdaIN, first proposed in 2017 \cite{adain} is given by
+\begin{align}
+  \text{AdaIN}(\mathbf{x},\mathbf{y}) = \mathbf{y}_s \frac{\mathbf{x}-\mu(\mathbf{x})}{\sigma{\mathbf{x}}}+\mathbf{y}_b
+\end{align}
+AdaIn uses a "learned affine transformation” $A$ that maps the latent  vector $\mathbf{y}$ onto two scalars $A(\mathbf{w})= \mathbf{y}=(\mathbf{y}_s,\mathbf{y}_b)$ here $s$ stands for scale, and $b$ stands for bias.
+
+\begin{wrapfigure}{r}{5.5cm}
+\includegraphics[width=5.5cm]{fig/stylegan-arch}
+\caption{Summary of the StyleGAN Generator Model Architecture.
+Taken from: A Style-Based Generator Architecture for Generative Adversarial Networks.\cite{stylegan}}
+\label{stylegan-arch}
+\end{wrapfigure}
+
+In the StyleGAN paper the authors also introduce a new data set called FlickrFaces-HQ (FFHQ) \footnote{Made public here: \url{https://github.com/NVlabs/ffhq-dataset}}, which consists of 70,000 images with even more variation than the CelebA-HQ dataset.\cite{stylegan}
+
+
+In the paper \textit{Interpreting the Latent Space of GANs for Semantic Face Editing}(2018)\cite{interfacegan} is was shown that the latent space of StyleGAN is disentangled to a high degree and it is possible to find subspaces in the latent space that encode different semantic features.
+
+These subspaces were found by first generating a set of random images by sampling the latent vector from the normal distribution and then use an out of the box linear classifier to do binary classification of the attribute we are interested in.
+
+We can then define a separating hyperplane in the latent space. Normal vector of this hyperplane gives us a semantic direction in the latent space.
+
+
+\section{Variational Autoencoders}
+
+\textit{Generating Diverse High-Fidelity Images with VQ-VAE-2}\cite{vqvae2}

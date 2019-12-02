@@ -1,0 +1,70 @@
+\chapter{Theory}
+
+
+\section{Inception Score}
+\url{https://machinelearningmastery.com/how-to-implement-the-inception-score-from-scratch-for-evaluating-generated-images/}
+
+
+\section{Principal Component Analasyis. }
+
+\section{Probabilistic models}
+We assume that the observed variable $\mathbf{x}$ is a sample from the true distribution $p^*(\mathbf{x})$.\cite{vaeintro} Out goal is to approximate the true distribution with a model such that
+
+\begin{align}
+  p_\theta(\mathbf{x})\approx p^*(\mathbf{x})
+\end{align}
+
+Now, how do we ego about actually modeling this distribution $p_\theta(\mathbf{x})$?. We can use Neural networks to parametrize the distribution.
+
+The log-probability of the data is
+\begin{align}
+  \log p_\theta(\mathcal{X}) = \sum_{\mathbf{x}\in\mathcal{X}} p_\theta(\mathbf{x})
+\end{align}
+
+Maximization of the log-likelihood is equivalent to minimizing the KullBack-Leibler divergence.
+
+The KullBack-Leibler divergence is given by
+
+\begin{align}
+D_{\text{KL}}(p_\theta,q_\phi) = -\sum_{\mathbf{x}\in\mathcal{X}}p_\theta(\mathbf{x})\log \frac{q_\phi(\mathbf{x})}{p_\theta(\mathbf{x})}
+\end{align}
+
+% \section{Survey}
+
+\section{Variational Autoencoders.}
+The encoder network models$p_\theta(\mathbf{z}|\mathbf{x})$ while the encoder network models $p_\theta(\mathbf{x}|\mathbf{z})$
+
+
+\section{GANs}
+
+The premise of GANs is to play minmax game between two competing neural networks. We simultaneously train a discriminator $D$ and a generator $G$.
+The discriminator $D$ is a binary classifier whose objective is classify whether a show example image is coming from the data distribution $p_D$ or from the generated $p_G$ distribution.
+
+The original value function,proposed in 2014 by Ian Goodfellow et al.\cite{gan} is given by
+\begin{align}
+\mathcal{L} = \min_G \max_D V(D,G))=\mathbb{E}_{\mathbf{x}\sim p_{\text{data}}(\mathbf{x})}
+\left[\log D(\mathbf(x))]\right]+
+\mathbb{E}_{\mathbf{z}\sim p_{\mathbf{z}}(\mathbf{z})}
+\left[\log (1-D(G(\mathbf(z)))]\right]
+\end{align}
+Here the $G$ tries to minimize $\mathcal{L}$ while the $D$ tries to maximize it.
+
+Since $D$ is taking a data point (image) $\mathbf{x}\in X$ and giving the probability that image is real or generated, it is a mapping $D:X \to (0,1)$.
+
+We define the generator as to depend on a latent variable $\mathcal{z}\in Z$ such that $G(\mathcal{z})$ is a mapping $G:Z\to X$.
+
+
+
+
+% \paragraph{Face Aging}
+% \textit{Face Aging With Conditional Generative Adversarial Networks} (2017) \cite{faceaging}
+
+% \section{3D Reconstruction}
+%
+% \textit{Projective Structure from Facial Motion}(2017)\cite{ProjectiveStructure}
+%
+% \textit{Apathy is the Root of all Expressions}(2017)\cite{apathy}
+%
+% In the paper \textit{"Large Pose 3D Face Reconstruction from a Single Image via Direct Volumetric CNN Regression"}(2017)\cite{largepose}
+% the authors used a Convolutional Neural Network to reconstruct the 3D facial geometry from just a single image. The model work under arbitrary poses
+% and expressions and without the need of a 3D Morphable Model.
