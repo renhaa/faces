@@ -1,11 +1,11 @@
 \chapter{Theory}
 
+%
+% \section{Inception Score}
+% \url{https://machinelearningmastery.com/how-to-implement-the-inception-score-from-scratch-for-evaluating-generated-images/}
+%
 
-\section{Inception Score}
-\url{https://machinelearningmastery.com/how-to-implement-the-inception-score-from-scratch-for-evaluating-generated-images/}
-
-
-\section{Principal Component Analasyis. }
+% \section{Principal Component Analasyis. }
 
 \section{Probabilistic models}
 We assume that the observed variable $\mathbf{x}$ is a sample from the true distribution $p^*(\mathbf{x})$.\cite{vaeintro} Out goal is to approximate the true distribution with a model such that
@@ -36,23 +36,6 @@ The encoder network models$p_\theta(\mathbf{z}|\mathbf{x})$ while the encoder ne
 
 
 \section{GANs}
-
-The premise of GANs is to play minmax game between two competing neural networks. We simultaneously train a discriminator $D$ and a generator $G$.
-The discriminator $D$ is a binary classifier whose objective is classify whether a show example image is coming from the data distribution $p_D$ or from the generated $p_G$ distribution.
-
-The original value function,proposed in 2014 by Ian Goodfellow et al.\cite{gan} is given by
-\begin{align}
-\mathcal{L} = \min_G \max_D V(D,G))=\mathbb{E}_{\mathbf{x}\sim p_{\text{data}}(\mathbf{x})}
-\left[\log D(\mathbf(x))]\right]+
-\mathbb{E}_{\mathbf{z}\sim p_{\mathbf{z}}(\mathbf{z})}
-\left[\log (1-D(G(\mathbf(z)))]\right]
-\end{align}
-Here the $G$ tries to minimize $\mathcal{L}$ while the $D$ tries to maximize it.
-
-Since $D$ is taking a data point (image) $\mathbf{x}\in X$ and giving the probability that image is real or generated, it is a mapping $D:X \to (0,1)$.
-
-We define the generator as to depend on a latent variable $\mathcal{z}\in Z$ such that $G(\mathcal{z})$ is a mapping $G:Z\to X$.
-
 
 
 

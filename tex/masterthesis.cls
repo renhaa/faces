@@ -9,8 +9,10 @@
 \ProvidesClass{masterthesis}[2015/06/11 v0.1 Master's thesis]
 \LoadClass[12pt, oneside, letterpaper]{book}
 
-%% End of file floats
-\RequirePackage[nomarkers,figuresonly]{endfloat}
+% %% End of file floats
+% \RequirePackage[nomarkers,figuresonly]{endfloat}
+
+\RequirePackage{parskip}
 
 \RequirePackage[english]{babel}
 \RequirePackage[utf8]{inputenc}
