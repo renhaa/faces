@@ -1,110 +1,19 @@
-\chapter{Introduction}
+\section{Introduction}
 
 
-A distinction between machine learning models are that between \emph{disciminative} and \emph{generative} models. In discriminative models we assign a label to a datapoint. For example given an image, which category does it belong to - is it a cat or a horse? Generative models however tried to approximate samples from a data distribution from a learned distribution.
+A distinction between machine learning models are that between \emph{disciminative} and \emph{generative} models. In discriminative models we assign a label to a datapoint. For example given an image, which category does it belong to - is it a cat or a horse? Generative models however tries to approximate samples from a data distribution from a learned distribution.
 
-In this research project we will explore different generative models on the domain of face synthesis. We can distinguish two main types of generative models: likelihood based models, which include Variational Autoencoders (VAEs) and implicit models such as Generative Adversarial Networks (GANs) \cite{vqvae2}.
+In this research project we will explore different generative models on the domain of face synthesis. We can distinguish two main types of generative models: likelihood based models, which include Variational Autoencoders (VAEs) and implicit models such as Generative Adversarial Networks (GANs)\cite{vqvae2}.
 
-In this paper we will compare these two methods while exploring different architectural implementation along the way. We will train our own models on two different datasets. Furthermore we will explore the latent space of pre trained models and show that we can use these to do state-of-the-art face synthesis and semantic face editing.
+In this project we will implement Principal Component Analysis(PCA) a VAE and a GAN and compare the results of generating faces with these three methods.
 
-\section{Generative Adversarial Networks.}
+We will start in the next
+exploring different architectural implementation along the way.
 
-Generative Adversarial Networks (GANs) have been shown to be able to create be able to generate photo realistic images of human faces.\cite{progan}
+The expected outcome of theis project is theree folde
 
-There has been proposed several improvements and variations of the original GAN architecture proposed in 2014 by Ian Goodfellow et al.\cite{gan}.
+1) gaining an overview of modern generative models trhough a literature survery. Here we will review recent litterature and explore there different recent  architectural implementation of VAEs and GANS. We will provide the nessecary theory along the way. Wwith we will do in the next section
 
-The premise of GANs is to play minmax game between two competing neural networks. We simultaneously train a discriminator $D$ and a generator $G$.
-The discriminator $D$ is a binary classifier whose objective is classify whether a show example image is coming from the data distribution $p_D$ or from the generated $p_G$ distribution. In the original paper discriminator and generator architectures were both multilayer perceptrons.
+2) gain practical understanding by implementing versions of the different models and training them two different datasets.
 
-The original value function, is given by
-\begin{align}
-\mathcal{L} = \min_G \max_D V(D,G))=\mathbb{E}_{\mathbf{x}\sim p_{\text{data}}(\mathbf{x})}
-\left[\log D(\mathbf(x))]\right]+
-\mathbb{E}_{\mathbf{z}\sim p_{\mathbf{z}}(\mathbf{z})}
-\left[\log (1-D(G(\mathbf(z)))]\right]
-\end{align}
-Here the $G$ tries to minimize $\mathcal{L}$ while the $D$ tries to maximize it.
-
-Since $D$ is taking a data point (image) $\mathbf{x}\in X$ and giving the probability that image is real or generated, it is a mapping $D:X \to (0,1)$. We define the generator as to depend on a latent variable $\mathcal{z}\in Z$ such that $G(\mathcal{z})$ is a mapping $G:Z\to X$.
-
-
-
-
-In \textit"{Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks"}(2015) (DCGAN)\cite{dcgan} the authors outlines a set of guidelines to improve the training stability of GANs among them are using convolutional layers, using the RELU activation in all layers i the generator except in the output layer which uses $\tanh$. In the discriminator the activation function is  the LeakyRELU activation which is defined as
-
-\begin{align}
-  \text{LeakyRELU}(x) =
-  \begin{cases}
-    x & \text{if}\quad x\geq0\\
-    0.1x & \text{if}\quad x<0
-  \end{cases}
-\end{align}
-
-where the "normal" RELU just outputs $0$ for $x<0$. The paper also proposes to do batch normalization in both the generator and the discriminator and to replace any pooling layers with strided convolutions. Batch normalization means that we normalize every input feature of a layer to have zero mean and unit variance.\footnote{\url{https://sthalles.github.io/advanced_gans/}}. A stride in a convolutional layer defines the distance between the spatial locations where the convolution kernel is applied.
-
-In the paper \textit{"Progressive Growing of GANs for Improved Quality, Stability, and Variation"}(ProGan)\cite{progan} the authors used GANs to generate photorealistic images from CelebA-HQ a high quality version of the original CelebA dataset.\cite{celebA}. This work also uses convolutional layers and the main improvement is to progressively grow the generated images starting from a low resolution and then gradually add more layers to the generator and discriminator networks to produce higher resolution images.
-
-In \textit{"Large Scale GAN Training for High Fidelity Natural Image Synthesis"}(BigGAN) \cite{biggan} the authors find progressive growing is unnecessary even for the largest images they considered which was 512 by 512 color images. They trained their GAN on imagenet which consists of over 14 million images which are annotated in the in a tree structure.\cite{imagenet} This is by far the GAN which has been trained on the largest dataset that I could find during the review of recent GAN literature.
-% In SA-GAN\cite{sagan}
-
-In \textit{A Style-Based Generator Architecture for Generative Adversarial Networks}(2018)\cite{stylegan} the authors improved the ProGan model by including elements from the style transfer literature. Particularly instead of feeding the latent vector $z\in\mathcal{Z}$ directly into the generator via a fully connected layers, StyleGAN introduces a non-linear mapping network $f:\mathcal{Z}\to\mathcal{W}$ which encoded the input latent vector $z$ into an intermediate vector $w$.
-
-The vector $w$ then controls the generator through adaptive instance normalization (AdaIN) at each convolution layer.
-AdaIN, first proposed in 2017 \cite{adain} is given by
-
-\begin{align}
-  \text{AdaIN}(\mathbf{x},\mathbf{y}) = \mathbf{y}_s \frac{\mathbf{x}-\mu(\mathbf{x})}{\sigma{\mathbf{x}}}+\mathbf{y}_b
-\end{align}
-
-AdaIn uses a "learned affine transformation” $A$ that maps the latent  vector $\mathbf{y}$ onto two scalars $A(\mathbf{w})= \mathbf{y}=(\mathbf{y}_s,\mathbf{y}_b)$ here $s$ stands for scale, and $b$ stands for bias.
-
-
-  \begin{wrapfigure}{r}{5.5cm}
-  \includegraphics[width=5.5cm]{fig/stylegan-arch}
-  \caption{Summary of the StyleGAN Generator Model Architecture.
-  Taken from: A Style-Based Generator Architecture for Generative Adversarial Networks.\cite{stylegan}}
-  \label{stylegan-arch}
-  \end{wrapfigure}
-
-
-
-In the StyleGAN paper the authors also introduce a new data set called FlickrFaces-HQ (FFHQ) \footnote{Made public here: \url{https://github.com/NVlabs/ffhq-dataset}}, which consists of 70,000 images with even more variation than the CelebA-HQ dataset.\cite{stylegan}
-
-
-In the paper \textit{Interpreting the Latent Space of GANs for Semantic Face Editing}(2018)\cite{interfacegan} is was shown that the latent space of StyleGAN is disentangled to a high degree and it is possible to find subspaces in the latent space that encode different semantic features.
-
-These subspaces were found by first generating a set of random images by sampling the latent vector from the normal distribution and then use an out of the box linear classifier to do binary classification of the attribute we are interested in.
-
-We can then define a separating hyperplane in the latent space. Normal vector of this hyperplane gives us a semantic direction in the latent space.
-
-
-% In SA-GAN\cite{sagan}
-
-
-\section{Variational Autoencoders}
-
-\textit{Generating Diverse High-Fidelity Images with VQ-VAE-2}\cite{vqvae2}
-
-
-We assume that the observed variable $\mathbf{x}$ is a sample from the true distribution $p^*(\mathbf{x})$.\cite{vaeintro} Out goal is to approximate the true distribution with a model such that
-
-\begin{align}
-  p_\theta(\mathbf{x})\approx p^*(\mathbf{x})
-\end{align}
-
-Now, how do we ego about actually modeling this distribution $p_\theta(\mathbf{x})$?. We can use Neural networks to parametrize the distribution.
-
-The log-probability of the data is
-\begin{align}
-  \log p_\theta(\mathcal{X}) = \sum_{\mathbf{x}\in\mathcal{X}} p_\theta(\mathbf{x})
-\end{align}
-
-Maximization of the log-likelihood is equivalent to minimizing the KullBack-Leibler divergence.
-
-The KullBack-Leibler divergence is given by
-
-\begin{align}
-D_{\text{KL}}(p_\theta,q_\phi) = -\sum_{\mathbf{x}\in\mathcal{X}}p_\theta(\mathbf{x})\log \frac{q_\phi(\mathbf{x})}{p_\theta(\mathbf{x})}
-\end{align}
-
-The encoder network models$p_\theta(\mathbf{z}|\mathbf{x})$ while the encoder network models $p_\theta(\mathbf{x}|\mathbf{z})$
+3) Finally we will Furthermore we will explore the latent space of pre trained models and show that we can use these to do state-of-the-art face synthesis and semantic face editing.

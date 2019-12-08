@@ -2,7 +2,8 @@
 % \usepackage[utf8x]{inputenc}
 \usepackage{microtype}
 %\usepackage[icelandic]{babel}
-
+\usepackage{amsfonts}
+\usepackage{amssymb}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -15,8 +16,9 @@
 \usepackage{tcolorbox}
 \usepackage{subcaption}
 \usepackage{hyperref}
+\usepackage{parskip}
 \usepackage[margin=3cm]{geometry}
-
+\usepackage{graphicx,wrapfig}
 
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
@@ -76,12 +78,13 @@ showstringspaces=false            %
 \tableofcontents
 \newpage
 
-
 \input{sec/intro}
 \input{sec/theory}
-\input{sec/results}
-
-
+\input{sec/training}
+\input{sec/stylegan}
+\input{sec/conclusion}
+\input{sec/appendix}
+\newpage
 \bibliography{references}
 \bibliographystyle{plain}
 

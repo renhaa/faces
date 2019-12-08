@@ -1,8 +1,7 @@
-\chapter{Training our own models.}
+\section{Training our own models.}
 
-\section{Data sets}
+\subsection{Data sets}
 In the following we will use two different datasets. 1) \emph{Caltech} \footnote{Available at \footnote{http://www.vision.caltech.edu/html-files/archive.html}} which consists of "450 frontal face images of 27 or so unique people." and 2) \emph{FFHQ}\footnote{Available at \footnote{https://github.com/NVlabs/ffhq-dataset}} Here we use the 5000 of the provided thumbnails of resolution 128x128.
-
 
 The FFHQ dataset is already preprocessed such that the faces are aligned and the images are of the same dimensions. For Caltech however we need to do this preprocessing manually.
 
@@ -31,13 +30,9 @@ In Figure \ref{rawdata} we see a random sample of the processed images from the 
 \end{figure}
 
 
-\section{Principal Component Analysis }
-In this section we explore the results of using Principal Component Analysis (PCA) for face synthesis. PCA is predominately used for dimensionality reduction but here we will use it for synthesis.
+\subsection{Principal Component Analysis }
 
-The goal of PCA is to find the Principal Components which are the directions of greatest variance in the dataset. These directions are the eigenvectors or, in this context, eigenfaces of the covariance matrix.
-
-Let $\tilde{\mathbf{X}} = \mathbf{X} - \bar{\mathbf{X}}$ then $\mathbf{X}^T\mathbf{X}$ is the covariance matrix we find the eigenfaces the usual way by demanding that $\det(\mathbf{X}^T\mathbf{X} - \lambda) = 0$
-We then sort the eigenface after eigenvalue $\lambda$ in order of descending variance. In Figure \ref{eigenface} we see the first 8 eigenfaces.
+In Figure \ref{eigenface} we see the first 8 eigenfaces.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{fig/PCA/pca}
@@ -45,24 +40,41 @@ We then sort the eigenface after eigenvalue $\lambda$ in order of descending var
   \label{eigenface}
 \end{figure}
 
-We can generate new synthetic faces $F$ by adding a linear combination of the
-eigenfaces $F_i$ to the mean face $F_m$.
+We see that the PCA algorithms is able we capture meaningfull aspect of the dataset.
 
-\begin{align}
-F  = F_m + \sum_{i} \alpha_i F_i
-\end{align}
+By visual inspection we observe that it seems that the Principal Components control aspects of 1) and 2) Color 3) direction of lighting 4) age 5) pose and 6) gender.
+
 in Figure \ref{pca-components} we see the results of varying the first six
 principal components.
 
-In order it seems that the Principal Component control aspects of 1) and 2) Color 3) direction of lighting 4) age 5) pose and 6) gender.
 
-
-
-\section{DCGAN}
+\subsection{VAE}
 
 
 
 
+
+\subsection{DCGAN}
+In figure \ref{dcgan-results} we see the results from training a DCGAN the FFHQ and Caltech datasets for 10000 epochs.
+
+The training time was about 6 hours in using Google Colab. As we see in the figure the result is no nowhere near photorealism.
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{fig/dcgan/caltech/epoch10000}
+        \caption{Caltech dataset B/W}
+        \label{dcgan-caltech}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{fig/dcgan/ffhq/epoch10000}
+        \caption{FFHQ dataset}
+        \label{dcgan-ffhq}
+    \end{subfigure}
+    \caption{The results from training the DCGAN for 10000 epochs on the FFHQ and Caltech datasets respectively.}
+    \label{dcgan-results}
+\end{figure}
 
 
 
