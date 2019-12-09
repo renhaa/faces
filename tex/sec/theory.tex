@@ -26,7 +26,11 @@ We explore the results of applying this technique in section.
 
 
 \subsection{Variational Autoencoders}
+https://www.jeremyjordan.me/variational-autoencoders/
 
+https://danijar.com/building-variational-auto-encoders-in-tensorflow/
+
+https://jaan.io/what-is-variational-autoencoder-vae-tutorial/
 
 \textit{Generating Diverse High-Fidelity Images with VQ-VAE-2}\cite{vqvae2}
 
@@ -104,13 +108,13 @@ AdaIN, first proposed in 2017 \cite{adain} is given by
 
 AdaIn uses a "learned affine transformation” $A$ that maps the latent  vector $\mathbf{y}$ onto two scalars $A(\mathbf{w})= \mathbf{y}=(\mathbf{y}_s,\mathbf{y}_b)$ here $s$ stands for scale, and $b$ stands for bias.
 
-
 \begin{wrapfigure}{r}{5.5cm}
 \includegraphics[width=5.5cm]{fig/stylegan-arch}
 \caption{Summary of the StyleGAN Generator Model Architecture.
 Taken from: A Style-Based Generator Architecture for Generative Adversarial Networks.\cite{stylegan}}
 \label{stylegan-arch}
 \end{wrapfigure}
+
 
 In the StyleGAN paper the authors also introduce a new data set called FlickrFaces-HQ (FFHQ) \footnote{Made public here: \url{https://github.com/NVlabs/ffhq-dataset}}, which consists of 70,000 images with even more variation than the CelebA-HQ dataset.\cite{stylegan}
 
