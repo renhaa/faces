@@ -17,8 +17,12 @@
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{parskip}
-\usepackage[margin=3cm]{geometry}
+% \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx,wrapfig}
+
+% \usepackage[round]{natbib}   % omit 'round' option if you prefer square brackets
+% \bibliographystyle{plainnat}
+% \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
 
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
@@ -78,12 +82,13 @@ showstringspaces=false            %
 \tableofcontents
 \newpage
 
-\input{sec/intro}
-\input{sec/theory}
-\input{sec/training}
-\input{sec/stylegan}
-\input{sec/conclusion}
-\input{sec/appendix}
+
+\include{sec/intro}
+\include{sec/theory}
+\include{sec/training}
+\include{sec/stylegan}
+\include{sec/conclusion}
+\include{sec/appendix}
 \newpage
 \bibliography{references}
 \bibliographystyle{plain}

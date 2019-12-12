@@ -1,3 +1,4 @@
+\newpage
 \section{Exploring the latent space of StyleGAN}
 
 In this section we will explore  very regent advances in face synthesis\footnote{} in use a pretrained
@@ -6,9 +7,10 @@ In this section we will explore  very regent advances in face synthesis\footnote
 
 We can download the weigths of a pre-trained stylegan trained by Nvidia\footnote{\url{https://github.com/NVlabs/stylegan.git}}\cite{stylegan}
 The model is trained on the full size and resolution version of the FFHQ dataset.
-With the trained generator we can draw sample $z$ from the normal distribution and generate faces $G(x)$ which are near impossible to humans to distinguish from real faces. In Figure \ref{StyleGAN-examples} we see eight such samples. We can create as many photo realistic faces, of people who have existed, as we want.
+With the trained generator we can draw sample $z$ from the normal distribution and generate faces $G(x)$ which are near impossible to humans to distinguish from real faces.
 
-\begin{figure}
+In Figure \ref{StyleGAN-examples} we see eight such samples. We can create as many photo realistic faces, of people who have existed, as we want.
+\begin{figure}[h!]
   \includegraphics[width=\textwidth]{fig/stylegan/randomsamples}
   \caption{Random samples from the pretrained StyleGAN}
   \label{StyleGAN-examples}

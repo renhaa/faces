@@ -1,17 +1,13 @@
-
-\section{Theory}
-In this section we will outline the basic theory of Principal component analysis, Variational Autoencoders and Generative Adversarial Networks.
-
-For the latter two we will do a brief literature review while developing the theory behind the models.
+\newpage
+\section{Theory} \label{theory}
+In this section we will outline the basic theory of Principal component analysis, Variational Autoencoders and Generative Adversarial Networks. For the latter two we will do a brief literature review while developing the theory behind the models.
 
 \subsection{PCA}
 The first method we will explore is Princinal Component Analysis. PCA is most often thought of at a technique for dimensionality reduction but as we will see here is can also be used for image synthesis.
 
 PCA provide a relatively simple to understand "non-neural" baseline for our exploration of how to use  generative algorithms for face synthesis.
 
-The goal of PCA is to find the Principal Components which are the directions of greatest variance in the dataset.
-
-These directions are the eigenvectors or, in this context \emph{eigenfaces}, of the covariance matrix.
+The goal of PCA is to find the Principal Components which are the directions of greatest variance in the dataset. These directions are the eigenvectors or, in this context \emph{eigenfaces}, of the covariance matrix.
 
 Let $\tilde{\mathbf{X}} = \mathbf{X} - \bar{\mathbf{X}}$ then $\mathbf{X}^T\mathbf{X}$ is the covariance matrix we find the eigenfaces the usual way by demanding that $\det(\mathbf{X}^T\mathbf{X} - \lambda) = 0$
 
@@ -21,42 +17,87 @@ We can now generate new synthetic faces $F$ by adding a linear combination of th
 \begin{align}
 F  = F_m + \sum_{i} \alpha_i F_i
 \end{align}
-We explore the results of applying this technique in section.
 
-
+We explore the results of applying this technique in Section \ref{training} where we will see that the eigenfaces are able to caputure meaningfull informaiton about the data sets.
 
 \subsection{Variational Autoencoders}
-https://www.jeremyjordan.me/variational-autoencoders/
-
-https://danijar.com/building-variational-auto-encoders-in-tensorflow/
-
-https://jaan.io/what-is-variational-autoencoder-vae-tutorial/
-
-\textit{Generating Diverse High-Fidelity Images with VQ-VAE-2}\cite{vqvae2}
+% https://www.jeremyjordan.me/variational-autoencoders/
+% https://danijar.com/building-variational-auto-encoders-in-tensorflow/
+% https://jaan.io/what-is-variational-autoencoder-vae-tutorial/
 
 
-We assume that the observed variable $\mathbf{x}$ is a sample from the true distribution $p^*(\mathbf{x})$.\cite{vaeintro} Out goal is to approximate the true distribution with a model such that
+Variational Autoencoders were first proposed in \textit{Auto-Encoding Variational Bayes} \cite{vae1} and \textit{Stochastic Backpropagation and Approximate Inference in Deep Generative Models} \cite{vae2}
 
+Variational autoencoders build upon normal autoencoders which consist of an encoder $E$ and a decoder $D$. The decoder compresses a datapoint $x$ to s lower dimensional latent representation $z = E(x)$ while the decoder learns the reverse mapping. The network is then then trained to minimize the reconstruction error between an input $x$ and the output $D(E(x))$. 
+
+While the normal autencoder learns a mapping from $x$ to $z$ a variational autoencoder on the other hand learns a probability distribution of the data. 
+We assume that the observed variable $\mathbf{x}$ is a sample from the true distribution $p^*(\mathbf{x})$.\cite{vaeintro} 
+
+Our goal is to approximate the true distribution with a model such that
 \begin{align}
   p_\theta(\mathbf{x})\approx p^*(\mathbf{x})
 \end{align}
-
-Now, how do we go about actually modeling this distribution $p_\theta(\mathbf{x})$?. We can use Neural networks to parametrize the distribution.
-
-The log-probability of the data is
+Now, in a variational autoencoder the latent variable is drawn from a prior $z\sim p(z)$ wich we choose to be normally distibuted with zero mean and unit standard deviation. We can the then draw datapoint new $x\sim p(x|z)$.The learned joint probability distribution over the data and latens variables is given by
 \begin{align}
-  \log p_\theta(\mathcal{X}) = \sum_{\mathbf{x}\in\mathcal{X}} p_\theta(\mathbf{x})
+    p(x,z)=p(x|z)p(z)
+\end{align}
+Now take $p(x)$ which is refered to at the model \emph{evidence}. It is the integral over the joint distribution
+\begin{align}
+    p(x)= \int p(xz)dz \int p(x|z) p(z)dz 
+    \label{evidence}
+\end{align}
+Calculting this however is typically intractible since neigther analytic solution or efficient estimators exists. \cite{vaeintro} 
+
+The solution to the intractibility problem is to model the true posterior $p(z|x)$ by a family of distributions $p(z|x)_\theta$ parameterized by the variational parameter $\theta$. We can model $p(z|x)_\theta$ and $p(x|z)_\theta$ by neural networks. The encoder network models $p(z|x)_\theta$ while the decoder network models $p(x|z)_\theta$ We wish to optimize $\theta$ such that $p(z|x)\theta \approx p(z|x)$
+
+From Bayes theorem we get the \emph{posterior}  
+\begin{align}
+    p(z|x) =\frac{p(x|z)p(z)}{p(x)}
 \end{align}
 
-Maximization of the log-likelihood is equivalent to minimizing the Kullback-Leibler divergence.
-
-The Kullback-Leibler divergence is given by
-
+Now to have a metric for how close two probability densities $p$, $q$ are to each other we can use the Kullback-Leibler (KL) divergence which is defined as
 \begin{align}
-D_{\text{KL}}(p_\theta,q_\phi) = -\sum_{\mathbf{x}\in\mathcal{X}}p_\theta(\mathbf{x})\log \frac{q_\phi(\mathbf{x})}{p_\theta(\mathbf{x})}
+D_{\text{KL}}(p,q) = \int p(x)\log \left(\frac{q(x)}{p(x)}\right) dx =  \mathbb{E}_{x\sim p(x)}\left[ \log\left(\frac{q(x)}{p(x)}\right)\right]
 \end{align}
 
-The encoder network models$p_\theta(\mathbf{z}|\mathbf{x})$ while the encoder network models $p_\theta(\mathbf{x}|\mathbf{z})$
+TheKL divergence  is non-negative $D_{\text{KL}}(p,q) \geq 0$ and zero if and only if $p(x) q(x)$. Now the KL divergence  between the modeled posterior $ p_\theta(z|x)$ and the true posterior  $p(z|x)$ is
+
+\begin{align}
+    D_{\text{KL}}(p_\theta(z|x),p(z|x)) = \mathbb{E}_{x\sim p(x)} \log\left(\frac{p(x,z)}{p_\theta(z|x)}\right) -  \mathbb{E}_{x\sim p(x)} \left[\log(p(x))\right]
+\end{align}
+
+Now the model evidence from eq. \ref{evidence} is intratable so we cannot compute it directly. The first term is called the "Evidence Lower BOund" 
+
+\begin{align}
+    \text{ELBO}(x) = \mathbb{E}_{x\sim p(x)} \log\left(\frac{p(x,z)}{p_\theta(z|x)}\right)
+\end{align}
+Since we now can rewtire the model evicende as 
+\begin{align}
+    \log(p(x)) = \text{ELBO}(x) +  D_{\text{KL}}(p_\theta(z|x),p(z|x))
+\end{align}
+And since the KL divergence is non-negative this means that that minimizing the Kullback-Leibler divergence is equivalent to maximizing the ELBO. Thus we can make the ELBO our loss function $-l_\theta(x)=\text{ELBO}(x)$. 
+
+This achieves two things we care about\cite{vaeintro}: 
+
+\begin{enumerate}
+    \item It will maximize the marginal likelihood $p_\theta(x)$.
+This means that our generative model will become better.
+    \item It will minimize the KL divergence between $q_\theta(z|x)$ and $q_\theta(z|x)$ so the model posterior become closer to the true posterior.
+\end{enumerate}
+
+
+% The Kullback-Leibler divergence is defined as by
+% \begin{align}
+% D_{\text{KL}}(p_\theta,q_\phi) = -\sum_{\mathbf{x}\in\mathcal{X}}p_\theta(\mathbf{x})\log \frac{q_\phi(\mathbf{x})}{p_\theta(\mathbf{x})}
+% \end{align}
+
+
+% Now, how do we go about actually modeling this distribution $p_\theta(\mathbf{x})$?. We can use Neural networks to parametrize the distribution.
+
+
+% \textit{Generating Diverse High-Fidelity Images with VQ-VAE-2}\cite{vqvae2}
+
+
 
 
 
@@ -71,7 +112,7 @@ The discriminator $D$ is a binary classifier whose objective is classify whether
 
 The original value function, is given by
 \begin{align}
-\mathcal{L} = \min_G \max_D V(D,G))=\mathbb{E}_{\mathbf{x}\sim p_{\text{data}}(\mathbf{x})}
+\min_G \max_D \mathbb{E}_{\mathbf{x}\sim p_{\text{data}}(\mathbf{x})}
 \left[\log D(\mathbf(x))]\right]+
 \mathbb{E}_{\mathbf{z}\sim p_{\mathbf{z}}(\mathbf{z})}
 \left[\log (1-D(G(\mathbf(z)))]\right]
