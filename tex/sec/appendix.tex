@@ -2,36 +2,100 @@
 \appendix
 \section{Appendix}
 
-\begin{figure}
+\begin{figure} [h!]
     \centering
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/PCA/pca0}
-        \caption{First Principal Component}
+   
     \end{subfigure}
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/PCA/pca1}
-        \caption{Second Principal Component}
+       
     \end{subfigure}
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/PCA/pca2}
-        \caption{Third Principal Component}
+       
     \end{subfigure}
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/PCA/pca3}
-        \caption{Fourth Principal Component}
+       
     \end{subfigure}
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/PCA/pca4}
-        \caption{Fifth Principal Component}
+
     \end{subfigure}
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/PCA/pca5}
-        \caption{Sixth Principal Component}
+
     \end{subfigure}
-    \caption{Synthetic faces created by varying a single principal component to the mean face.}
+    \caption{Synthetic faces created by varying a single principal component to the mean face if the FFHQ dataset. The rows correspond to the principal components such that the first row is the first compoment and so on. }
     \label{pca-components}
 \end{figure}
 
+%% VAE
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{fig/vae/caltech_epoch50}
+        \caption{Epoch 50}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/caltech_epoch400}
+        \caption{Epoch 400}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/caltech_epoch1000}
+        \caption{Epoch 1000}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/caltech_epoch2000}
+        \caption{Epoch 2000}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/caltech_epoch4000}
+        \caption{Epoch 4000}
+    \end{subfigure}
+    \caption{Samples from Variational Autoencoder  during training on a black and white version of the Caltech dataset}
+    \label{vaq-bwffhq-samples}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch50}
+        \caption{Epoch 50}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch400}
+        \caption{Epoch 400}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch1000}
+        \caption{Epoch 1000}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch2000}
+        \caption{Epoch 2000}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch4000}
+        \caption{Epoch 4000}
+    \end{subfigure}
+    \caption{Samples from Variational Autoencoder  during training on a black and white version of  the FFHQ dataset}
+    \label{vaq-bwffhq-samples}
+\end{figure}
+
+
+
+%% DCGAN
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -63,11 +127,17 @@
 \end{figure}
 
 
-\begin{figure}
-
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[width=\textwidth]{fig/dcgan/caltech/loss}
+\caption{ Caltech Dataset}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
 \includegraphics[width=\textwidth]{fig/dcgan/ffhq/loss}
-  \caption{Loss and accuracy of the discriminator during training on the FFHQ Datase}
-  \label{dcgan-ffhq-loss}
+\caption{FFHQ  Dataset}
+\end{subfigure}
+\caption{Loss and accuracy of the discriminator during training}
 \end{figure}
 
 \begin{figure}
@@ -100,9 +170,3 @@
     \label{dcgan-caltech-samples}
 \end{figure}
 
-\begin{figure}
-
-\includegraphics[width=\textwidth]{fig/dcgan/caltech/loss}
-  \caption{Loss and accuracy of the discriminator during training on the Caltech Dataset}
-  \label{dcgan-caltech-loss}
-\end{figure}
