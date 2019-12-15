@@ -2,6 +2,20 @@
 \section{Conclusion}
 
 
-I in this section we will sum up the work done in this reserch project as propose a few ideas for future work.
+In this section we will sum up the work we have dome in this reserch project as propose a few ideas for future work.
+
+In general a major limitation for this project was the computational resources available to us.  
+Training a state of the art generative model like StyleGan on a single Tesla V100 GPU \footnote{Which at the point of writing has a retail price of 59.995 dkr} would take 41 days 4 hours \footnote{\url{https://github.com/NVlabs/stylegan}}. 
+The best solution available to us was to use Google Colab which offers free GPU time on a Tesla K80 which is a weaker GPU than the V100. Colab is also limited in that the maximum running time allowed is 12 hours and this is if you remember to keep the tab open.
+
+% Therefore it was, in genereal  was not possible to train the Variarional Autoencoder and the Generatrive adversarial autoencoder to convergence.
+
 
 \subsection{Future work}
+Here we will present some ideas for future work. 
+
+\begin{enumerate}
+    \item Implement a metric for objectively evaluating the quality and variarity of the generated facec. One such metric is the Inception Score
+    
+    \item Using a more advanced implementation of Variational Autoencoder: The VAE we have used in this project was a simple Multilayer Persectrom. It could be interesing to see if the results would improve by using convolutional layers in the implementation of the encoder and decoder.  According the to recent work \cite{vqvae2} it is possible for more complex implementations of variational autoencoders to generate photorealistic faces with a puality on par with the ProgressiveGAN and StyleGan architectures.
+\end{enumerate}
