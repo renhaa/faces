@@ -1,12 +1,11 @@
 
 \section{Exploring the latent space of StyleGAN}
 \label{stylegan}
-In this section we will explore  very regent advances in face synthesis\footnote{} in use a pretrained
 
-\subsection{StyleGAN}
+In this section we will explore  very recent advances in face synthesis and semantic face editing\footnote{The InterfaceGan paper was published July this year!} by using a pretrained StyleGan trained by Nvidia. 
 
-We can download the weigths of a pre-trained stylegan trained by Nvidia\footnote{\url{https://github.com/NVlabs/stylegan.git}}\cite{stylegan}
-The model is trained on the full size and resolution version of the FFHQ dataset.
+We can download the weigths of a pretrained stylegan trained by Nvidia directly from their Github. \footnote{\url{https://github.com/NVlabs/stylegan.git}}\cite{stylegan}
+This model is trained on the full size and resolution version of the FFHQ dataset.
 With the trained generator we can draw sample $z$ from the normal distribution and generate faces $G(x)$ which are near impossible to humans to distinguish from real faces.
 
 In Figure \ref{StyleGAN-examples} we see eight such samples. We can create as many photo realistic faces, of people who have existed, as we want.
@@ -19,7 +18,7 @@ In Figure \ref{StyleGAN-examples} we see eight such samples. We can create as ma
 
 
 
-\subsubsection{Finding the latent space representation of an arbitrary query image.}
+\subsection{Finding the latent space representation of an arbitrary query image.}
 Now the pretrained StyleGAN does not contain an encoder network. Therefore there is no way to find a latent space representation of a arbitrary input image.
 There is, however a a least two different ways of tackling this problem.
 %
@@ -41,9 +40,13 @@ We use a pre-trained VGG16 network for transforming a query image and the genera
         \includegraphics[width=\textwidth]{fig/stylegan/originals}
         \caption{Original images.}
     \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+        \includegraphics[width=\textwidth]{fig/stylegan/reconstructionsfirstguess.png}
+        \caption{First guess of the latent space representation using the pretrained ResNet network}
+    \end{subfigure}
     \begin{subfigure}[b]{\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/reconstructions}
-        \caption{Reconstructed images.}
+        \caption{The reconstructed images after optimization using the pretrained VGG16 network.}
     \end{subfigure}
     \caption{Comparison of original query images and their reconstruction in the StyleGAN network}
     \label{stylegan-reconstruction}
@@ -105,7 +108,7 @@ for $0 \leq \alpha \leq 1$. This linear interpolation results in images that smo
 %     \caption{Interpolations between query images in the StyleGAN latent space.}
 % \end{figure}
 
-\subsubsection{Semantic face editing.}
+\subsection{Semantic face editing.}
 
 In Figure \ref{faceedit} we see the results from doing semantic face editing of the reconstructed images from
 \ref{stylegan-reconstruction}.
@@ -114,53 +117,39 @@ In Figure \ref{faceedit} we see the results from doing semantic face editing of 
     \centering
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/inger-smile}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/lars-smile}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/mette-smile}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/uffe-smile}
-
     \end{subfigure}
-
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/inger-glasses}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/lars-glasses}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/mette-glasses}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/uffe-glasses}
-
     \end{subfigure}
-
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/inger-gender}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/lars-gender}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/mette-gender}
-
     \end{subfigure}
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/uffe-gender}
-
     \end{subfigure}
     \caption{Semantic face editing.}
     \label{faceedit}

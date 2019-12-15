@@ -1,6 +1,14 @@
 \newpage
 \appendix
+\counterwithin{figure}{section}
+
 \section{Appendix}
+
+\begin{figure}[h!]
+  \includegraphics[width=\textwidth]{fig/PCA/pca}
+  \caption{Eigenfaces of the FFHQ dataset.}
+  \label{eigenface}
+\end{figure}
 
 \begin{figure} [h!]
     \centering
@@ -60,7 +68,7 @@
         \caption{Epoch 4000}
     \end{subfigure}
     \caption{Samples from Variational Autoencoder  during training on a black and white version of the Caltech dataset}
-    \label{vaq-bwffhq-samples}
+    \label{vaq-bwcaltech-samples}
 \end{figure}
 
 \begin{figure}[h!]
@@ -91,6 +99,36 @@
     \end{subfigure}
     \caption{Samples from Variational Autoencoder  during training on a black and white version of  the FFHQ dataset}
     \label{vaq-bwffhq-samples}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch50color}
+        \caption{Epoch 50}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch400color}
+        \caption{Epoch 400}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch1000color}
+        \caption{Epoch 1000}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch2000color}
+        \caption{Epoch 2000}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+         \includegraphics[width=\textwidth]{fig/vae/ffhq_epoch4000color}
+        \caption{Epoch 4000}
+    \end{subfigure}
+    \caption{Samples from Variational Autoencoder during training on the color version of the FFHQ dataset}
+    \label{vaq-ffhq-samples}
 \end{figure}
 
 

@@ -16,6 +16,7 @@ Since the matrix of eigenfaces diagonlized the covariance matrix and the fact th
 We can now generate new synthetic faces $F$ by adding a linear combination of the eigenfaces $F_i$ to the mean face $F_m$.
 \begin{align}
 F  = F_m + \sum_{i} \alpha_i F_i
+\label{eigenface-interpolate}
 \end{align}
 
 We explore the results of applying this technique in Section \ref{training} where we will see that the eigenfaces are able to caputure meaningfull informaiton about the data sets.
@@ -26,7 +27,7 @@ We explore the results of applying this technique in Section \ref{training} wher
 % https://jaan.io/what-is-variational-autoencoder-vae-tutorial/
 
 
-Variational Autoencoders were first proposed in \textit{Auto-Encoding Variational Bayes} \cite{vae1} and \textit{Stochastic Backpropagation and Approximate Inference in Deep Generative Models} \cite{vae2}
+Variational Autoencoders were first proposed in \textit{Auto-Encoding Variational Bayes} \cite{vae1} and \textit{Stochastic Backpropagation and Approximate Inference in Deep Generative Models}. \cite{vae2}
 
 Variational autoencoders build upon normal autoencoders which consist of an encoder $E$ and a decoder $D$. The decoder compresses a datapoint $x$ to s lower dimensional latent representation $z = E(x)$ while the decoder learns the reverse mapping. The network is then then trained to minimize the reconstruction error between an input $x$ and the output $D(E(x))$. 
 
@@ -60,7 +61,7 @@ Now to have a metric for how close two probability densities $p$, $q$ are to eac
 D_{\text{KL}}(p,q) = \int p(x)\log \left(\frac{q(x)}{p(x)}\right) dx =  \mathbb{E}_{x\sim p(x)}\left[ \log\left(\frac{q(x)}{p(x)}\right)\right]
 \end{align}
 
-TheKL divergence  is non-negative $D_{\text{KL}}(p,q) \geq 0$ and zero if and only if $p(x) q(x)$. Now the KL divergence  between the modeled posterior $ p_\theta(z|x)$ and the true posterior  $p(z|x)$ is
+The KL divergence is non-negative $D_{\text{KL}}(p,q) \geq 0$ and zero if and only if $p(x) = q(x)$. Now the KL divergence  between the modeled posterior $ p_\theta(z|x)$ and the true posterior  $p(z|x)$ is
 
 \begin{align}
     D_{\text{KL}}(p_\theta(z|x),p(z|x)) = \mathbb{E}_{x\sim p(x)} \log\left(\frac{p(x,z)}{p_\theta(z|x)}\right) -  \mathbb{E}_{x\sim p(x)} \left[\log(p(x))\right]
@@ -163,11 +164,10 @@ In the paper \textit{Interpreting the Latent Space of GANs for Semantic Face Edi
 
 Since it has been shown that for a "well-trained" GAN one can linearly interpolate beween to latent vectors  $z_1$ and $z_2$ and the resultant generated images $G(z_1)$ and $G(z_2)$ would also vary smoothly. We can for example smoothly morph an image of a man intro the face of a woman by interpolating bewteen the two latent vectors.   
 
-In the paper the central assumption that is true for any binary semantic attribute (e.g., male  and female or smile and no smile).\cite{interfacegan} Therefore there will exist a hyperplane in the latent space serving as the separation boundary.
-These  separation boundary were  found by first generating a set of random images by sampling the latent vector from the normal distribution and linear SVM on the semantic attribute we are interested in.
-In the paper they trained 5 indepentent SVMs on pose,smile,age,gender and eyeglasses using 40K random samples.
+In the paper the central assumption that is true for any binary semantic attribute (e.g., male  and female or smile and no smile).\cite{interfacegan} Therefore there will exist a hyperplane in the latent space serving as the separation boundary between all faces which have this binary semantic property and those which do not.
+In the paper these separation boundaries were found by first generating a set of random images by sampling the latent vector from the normal distribution. Then linear Support Vector Machines were traine on the semantic attribute we are interested in. In the paper they trained 5 indepentent SVMs on pose, smile, age, gender and eyeglasses using 40K random samples from the pretrained StyleGan network. 
 
-Having found the separating hyperplane in the latent space the normal vector of this hyperplane gives us a semantic direction in the latent space. which we can use to to semandic face diting which we will do in section \ref{stylegan}
+Having found the separating hyperplane in the latent space the normal vector of this hyperplane gives us a semantic direction in the latent space. As we will se in Section \ref{stylegan} we can use these semantic directions to do semantic face editing, by shifting the latent representations of a face in a given direction.
 
 
 
