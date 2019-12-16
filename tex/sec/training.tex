@@ -67,7 +67,7 @@ By visual inspection we observe that it seems that the first two Principal Compo
 Although Principal Component Analysis enables us to generate new faces and manipulate different aspects of the synthesized faces the results are still blurry, and nowhere near as photo realistic as the faces we will be able to generate with a pretrained Generative Adversarial Network in Section \ref{stylegan}.
 
 \subsection{VAE}
-To train a Variational Autoencoder we use a modified version of the VAE implementation from the keras documentation \footnote{ Available here: \url{https://keras.io/examples/variational_autoencoder/}} which is a keras the implementation from the original VAE from \cite{vae}. In the implementation the encoder and decoder are both modeled by multilayer perceptrons. We see a latent space dimension of 100 which is the same as for the DCGAN model which we present in the next subsection.
+To train a Variational Autoencoder we use a modified version of the VAE implementation from the keras documentation \footnote{ Available here: \url{https://keras.io/examples/variational_autoencoder/}} which is a keras the implementation from the original VAE from \cite{vae1}. In the implementation the encoder and decoder are both modeled by multilayer perceptrons. We see a latent space dimension of 100 which is the same as for the DCGAN model which we present in the next subsection.
 
 In Figure \ref{vaeresults} we see the result of training the VAE for 4000 epochs on a black and white version of the datasets. We choose to train for 4000 epochs as this is about the maximum durations which was possible to train in Google Colab before the runtime was reset. The training time for the FFHQ dataset was about 7-8 hours. We make the Jupyter notebook which generate these images available with this project.\footnote{Available here: \url{ https://github.com/renhaa/faces/blob/master/VAE.ipynb}}
 
@@ -98,7 +98,7 @@ In this section we will present our results with training a Deep Convolutional G
 The models uses four convolutional layers in with the generator and discriminator and the implementation follows the guidelines presented in \cite{dcgan} where we use strided convolutions, batch normalization and Leaky ReLU in the discriminator while the generator uses normal ReLU in all hidden layers exept the last where we use the hyperbolic tangent.In figure \ref{dcgan-results} we see the results from training a DCGAN the FFHQ and Caltech datasets for 10000 epochs. The training time was about 9-10 hours using Google Colab.
 
 \begin{figure}[h!]
-    \centerings
+    \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{fig/dcgan/caltech/epoch10000}
         \caption{Caltech dataset B/W}
