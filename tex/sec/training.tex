@@ -1,10 +1,10 @@
 \newpage
 \section{Training our own models.} \label{training}
 
-In this section we will present out results with training our own models. We will start by presenting the data sets used and then go on to present the reults of running the  PCA, VAE and DCGAN models on the data.
+In this section we will present out results with training our own models. We will start by presenting the data sets used and then go on to present the results of running the  PCA, VAE and DCGAN models on the data.
 
 \subsection{Data sets}
-In the following we will use two different datasets which we will refer to as the \emph{Caltech} and teh  \emph{FFHQ} dataset respectively. 1)  \emph{Caltech} \footnote{Available at \url{http://www.vision.caltech.edu/html-files/archive.html}} which consists of "450 frontal face images of 27 or so unique people." and 2) \emph{FFHQ}\footnote{Available at \url{https://github.com/NVlabs/ffhq-dataset}} Here we use the 5000 of the provided thumbnails of resolution 128x128.
+In the following we will use two different datasets which we will refer to as the \emph{Caltech} and the  \emph{FFHQ} dataset respectively. 1)  \emph{Caltech} \footnote{Available at \url{http://www.vision.caltech.edu/html-files/archive.html}} which consists of "450 frontal face images of 27 or so unique people." and 2) \emph{FFHQ}\footnote{Available at \url{https://github.com/NVlabs/ffhq-dataset}} Here we use the 5000 of the provided thumbnails of resolution 128x128.
 
 The FFHQ dataset is already preprocessed such that the faces are aligned and the images are of the same dimensions. For Caltech however we need to do this preprocessing manually.
 
@@ -30,22 +30,22 @@ In Figure \ref{rawdata} we see a random sample of the processed images from the 
     \label{rawdata}
 \end{figure}
 
-The FFHQ dataset have a much higher variation than the Caltech dataset, having samples of faces across all ages poses and ethnicity which the Caltech dataset is more limited having the same 27 people facing directly at the camera. 
+The FFHQ dataset have a much higher variation than the Caltech dataset, having samples of faces across all ages poses and ethnicities while the Caltech dataset is more limited having the same 27 people facing directly at the camera.
 
-In the following we will use both the colored version of the datasets and for some models we will use a black and white version. 
+In the following we will use both the colored version of the datasets and for some models we will use a black and white version.
 
 \subsection{Principal Component Analysis}
 
-Here we present our results of doing Proncipal Component analasis on the FFHQ dataset. 
+Here we present our results of doing Principal Component analysis on the FFHQ dataset.
 
-In the process of constructing the design matrix we simply flatten ech of the 120x120x3 dimensional color images to 49152 dimensional flat vectors. The normalize these vectors to zero mean and unit variance using\\ {\tt sklearn.preprocessing.StandardScaler} and calulate the eigenfaces with {\tt sklearn.decomposition.PCA}\footnote{The code is available here: \url{https://github.com/renhaa/faces/blob/master/PCA.ipynb}}
+In the process of constructing the design matrix we simply flatten each of the 120x120x3 dimensional color images to 49152 dimensional flat vectors. The normalize these vectors to zero mean and unit variance using\\ {\tt sklearn.preprocessing.StandardScaler} and calulate the eigenfaces with {\tt sklearn.decomposition.PCA}\footnote{The code is available here: \url{https://github.com/renhaa/faces/blob/master/PCA.ipynb}}
 
-In Figure \ref{eigenfacehere} we see the first 8 eigenfaces. In Figure. \ref{eigenface} in the appendix there is a larger version of this figure. We note that the generated faces from the caltech dataset have some artefacts in the form of shadowy lines across the faces. This are not present in the faces generated from training on the FFHQ dataset, these imates are however slightly blurry.   
+In Figure \ref{eigenfacehere} we see the first 8 eigenfaces. In Figure. \ref{eigenface} in the appendix there is a larger version of this figure. We note that the generated faces from the Caltech dataset have some artifacts in the form of shadowy lines across the faces. This are not present in the faces generated from training on the FFHQ dataset, these images are however slightly blurry.
 
-In Figure \ref{components} we see the result of adding or subtracting the 4th 5th and 6th eigenface to the mean face according to eq.\ref{eigenface-interpolate}. A larger figure showing this for the first six principal components can be seen in Figure \ref{pca-components} in the appendix. 
+In Figure \ref{components} we see the result of adding or subtracting the 4th 5th and 6th eigenface to the mean face according to eq.\ref{eigenface-interpolate}. A larger figure showing this for the first six principal components can be seen in Figure \ref{pca-components} in the appendix.
 
 We see that the PCA algorithms is able we capture meaningful aspect of the dataset.
-By visual inspection we observe that it seems that the first two Principal Components control aspects of color and ligthing, the third compoent controls the direction of lighting (is the lighting is from the left or the right). The fourth principal component seems to control ligthing from top to bottom but it could also seem like this component captures age. The fifth component clearly controls pose while the sixth component seems to be related to gender.
+By visual inspection we observe that it seems that the first two Principal Components control aspects of color and lighting, the third component controls the direction of lighting (is the lighting is from the left or the right). The fourth principal component seems to control lighting from top to bottom but it could also seem like this component captures age. The fifth component clearly controls pose while the sixth component seems to be related to gender.
 
 \begin{figure} [h!]
 \centering
@@ -62,14 +62,14 @@ By visual inspection we observe that it seems that the first two Principal Compo
          \caption{Mean face shifted by the 4-6th eigenface.}
          \label{components}
     \end{subfigure}
-     \caption{ In Figure. \ref{eigenfacehere} we see the Eigenfaces of the FFHQ dataset while in Figure. \ref{components} we see the mean face edited by by adding or subtracting the 4-6th eigenface from the mean face according to eq.\ref{eigenface-interpolate}.}
+     \caption{ In Figure. \ref{eigenfacehere} we see the eigenfaces of the FFHQ dataset while in Figure. \ref{components} we see the mean face edited by by adding or subtracting the 4-6th eigenface from the mean face according to eq.\ref{eigenface-interpolate}.}
 \end{figure}
-Although Principal Component Analasis enables us to generate new faces and manipulate different aspects of the synthesized faces the results are still blurry, and nowhere near as photorealistic as the faces we will be able to generate with a pretrained Genrative Adversarial Network in Section \ref{stylegan}.
+Although Principal Component Analysis enables us to generate new faces and manipulate different aspects of the synthesized faces the results are still blurry, and nowhere near as photo realistic as the faces we will be able to generate with a pretrained Generative Adversarial Network in Section \ref{stylegan}.
 
 \subsection{VAE}
-To train a Variational Autoencoder we use a modified version of the VAE implementation from the keras documentation \footnote{ Available here: \url{https://keras.io/examples/variational_autoencoder/}}. In the implementation the encoder and decoder are both modelled by multilayer perceptrons. We sse a latent space dimensition of 100 which is the same as for the DCGAN model which we present in the next subsection.   
+To train a Variational Autoencoder we use a modified version of the VAE implementation from the keras documentation \footnote{ Available here: \url{https://keras.io/examples/variational_autoencoder/}} which is a keras the implementation from the original VAE from \cite{vae}. In the implementation the encoder and decoder are both modeled by multilayer perceptrons. We see a latent space dimension of 100 which is the same as for the DCGAN model which we present in the next subsection.
 
-In Figure \ref{vaeresults} we see the result of training the VAE for 4000 epochs on a black and white version of the datasets. We choose to train for 4000 epochs as this is about the maximum durations which was possible to train in google colab before the runtime was reset. The training time for the FFHQ dataset was about 7-8 hours. We make the Jupyter notebook which generate these images available with this project.\footnote{Available here: \url{ https://github.com/renhaa/faces/blob/master/VAE.ipynb}}
+In Figure \ref{vaeresults} we see the result of training the VAE for 4000 epochs on a black and white version of the datasets. We choose to train for 4000 epochs as this is about the maximum durations which was possible to train in Google Colab before the runtime was reset. The training time for the FFHQ dataset was about 7-8 hours. We make the Jupyter notebook which generate these images available with this project.\footnote{Available here: \url{ https://github.com/renhaa/faces/blob/master/VAE.ipynb}}
 
 \begin{figure}[h!]
 \centering
@@ -86,19 +86,19 @@ In Figure \ref{vaeresults} we see the result of training the VAE for 4000 epochs
 \label{vaeresults}
 \end{figure}
 
-Larger figures with samples drawn during traing can be seen in Figure \ref{vaq-bwffhq-samples} and Figure \ref{vaq-bwcaltech-samples}. 
+Larger figures with samples drawn during training can be seen in Figure \ref{vaq-bwffhq-samples} and Figure \ref{vaq-bwcaltech-samples}.
 
-We also tried to train the VAE on color images but the results were unstable. The images during training can be seen in Figure \ref{vaq-ffhq-samples}. As can bee seen in the figure it seems that the model was improving at least until epoch 2000. But then at epoch 4000 the network suddenly did not improve anymore and there was little variation in the generated samlples. This problem also happened for the Caltech dataset. 
+We also tried to train the VAE on color images but the results were unstable. The images during training can be seen in Figure \ref{vaq-ffhq-samples}. As can bee seen in the figure it seems that the model was improving at least until epoch 2000. But then at epoch 4000 the network suddenly did not improve anymore and there was little variation in the generated samples. This problem also happened for the Caltech dataset.
 
 
 
 \subsection{DCGAN}
 In this section we will present our results with training a Deep Convolutional Generative Adversarial Network (DCGAN). \footnote{Concretely we use modified version of from \url{https://github.com/eriklindernoren/Keras-GAN/blob/master/dcgan/dcgan.py}} \footnote{The nodebook generating the results presented here can be found at: \url{https://github.com/renhaa/faces/blob/master/DCGAN.ipynb}}
 
-The models uses four convolutional layers in with the generator and discriminator and the implenmentation follows the guidelines presented in \cite{dcgan} where we use strided convolutions, batchnormalization and Leaky ReLU in the discrimintaro while the generator uses normal ReLU in all hidden layers exept the last where we use the hyperbolic tangent.In figure \ref{dcgan-results} we see the results from training a DCGAN the FFHQ and Caltech datasets for 10000 epochs. The training time was about 9-10 hours  using Google Colab.
+The models uses four convolutional layers in with the generator and discriminator and the implementation follows the guidelines presented in \cite{dcgan} where we use strided convolutions, batch normalization and Leaky ReLU in the discriminator while the generator uses normal ReLU in all hidden layers exept the last where we use the hyperbolic tangent.In figure \ref{dcgan-results} we see the results from training a DCGAN the FFHQ and Caltech datasets for 10000 epochs. The training time was about 9-10 hours using Google Colab.
 
 \begin{figure}[h!]
-    \centering
+    \centerings
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{fig/dcgan/caltech/epoch10000}
         \caption{Caltech dataset B/W}
@@ -114,6 +114,6 @@ The models uses four convolutional layers in with the generator and discriminato
     \label{dcgan-results}
 \end{figure}
 
-We see that this model is able to produce relatively decent images on the black and white version of the caltech dataset (Figure \ref{dcgan-caltech}). Sometimes we generate an image which could be mistaken for being real. Upon further imspection howefter, we note that the generated images are always somewhat similar to one of the 27 persons in the dataset. Thus it seem that we are able to create better quality images but with lower variation using the Caltech dataset compared to the FFHQ dataset. We argue that the generated images procudes here by DCGAN are of better quality and than the corresponding images synthesized by the Variational Autoencoder in the previous subsection. 
+We see that this model is able to produce relatively decent images on the black and white version of the Caltech dataset (Figure \ref{dcgan-caltech}). Sometimes we generate an image which could be mistaken for being real. Upon further inspection however, we note that the generated images are always somewhat similar to one of the 27 persons in the dataset. Thus it seem that we are able to create better quality images but with lower variation using the Caltech dataset compared to the FFHQ dataset. We argue that the generated images produced here by the DCGAN by training on the Caltech dataset are of better quality and than the corresponding images synthesized by the Variational Autoencoder from the previous subsection.
 
-The generated images by training the DCGAn on the FFHQ are however, as we see in Figure \ref{dcgan-ffhq}, nowhere near photorealism. 
+The generated images by training the DCGAN on the FFHQ are however, as we see in Figure \ref{dcgan-ffhq}, nowhere near photorealism, training for longer would almost certainly improve the results. 

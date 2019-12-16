@@ -2,24 +2,22 @@
 \section{Conclusion}
 
 
-In this section we will sum up the work we have dome in this reserch project as propose a few ideas for future work.
+In this section we will sum up the work we have dome in this research project as propose a few ideas for future work.
 
-In general a major limitation for the part of this project where we trained our own models was the computational resources available to us.  
-Training a state of the art generative model like StyleGan on a single Tesla V100 GPU \footnote{Which at the point of writing has a retail price of 59.995 dkr} would take 41 days 4 hours.\footnote{\url{https://github.com/NVlabs/stylegan}} 
+In general a major limitation for the part of this project where we trained our own models was the computational resources available to us.
+Training a state of the art generative model like StyleGan on a single Tesla V100 GPU \footnote{Which at the point of writing has a retail price of 59.995 dkr} would take 41 days 4 hours.\footnote{\url{https://github.com/NVlabs/stylegan}}
 The best solution available to us was to use Google Colab which offers free GPU time on a Tesla K80 which is a weaker GPU than the V100. Colab is also limited in that the maximum running time allowed is 12 hours and this is if you remember to keep the tab open.
 
-Despite the limitied computation power available to us, we have demonstrated 3 different models for face synthesis.
-Further we have shown that we can use a state-of-the-art pretrained model (StyleGan) to generate photorealistic images of faces. We have shown how to embed a real image in the StyleGan latent space and shown that this enables us to convincingly interpolate between different real face images as well as edit different semantic attributes of the embedded images. 
+Despite the limited computation power available to us, we have demonstrated 3 different models for face synthesis.
+Further we have shown that we can use a state-of-the-art pretrained model (StyleGan) to generate photo realistic images of faces. We have shown how to embed a real image in the StyleGan latent space and shown that this enables us to convincingly interpolate between different real face images as well as edit different semantic attributes of the embedded images.
 
-
-% Therefore it was, in genereal  was not possible to train the Variarional Autoencoder and the Generatrive adversarial autoencoder to convergence.
 
 
 \subsection{Future work}
 
-Here we will present some ideas for future work. 
+Here we will present some ideas for future work.
 \begin{enumerate}
-    \item Implement a metric for objectively evaluating the quality and variarity of the generated facec. One such metric is the Inception Score which is widely used in the litterature. 
-    
-    \item Using a more advanced implementation of Variational Autoencoder: The VAE we have used in this project was a simple Multilayer Persectrom. It could be interesing to see if the results would improve by using convolutional layers in the implementation of the encoder and decoder.  According the to recent work \cite{vqvae2} it is possible for more complex implementations of variational autoencoders to generate photorealistic faces with a puality on par with the ProgressiveGAN and StyleGan architectures.
+    \item Implement a metric for objectively evaluating the quality and variety of the generated faces. One such metric is the Inception Score which is widely used in the literature. It would be interesting to survey which metrics exist for evaluating the quality of generated images.
+
+    \item Using a more advanced implementation of Variational Autoencoder: The VAE we have used in this project was based on a simple Multilayer Perceptron architecture. It could be interesting to see if the results would improve by using convolutional layers in the implementation of the encoder and decoder.  According the to recent work \cite{vqvae2} it is possible for more complex implementations of variational autoencoders to generate photo realistic faces with a quality on par with the ProgressiveGAN and StyleGan architectures.
 \end{enumerate}

@@ -2,9 +2,9 @@
 \section{Exploring the latent space of StyleGAN}
 \label{stylegan}
 
-In this section we will explore very recent\footnote{The InterfaceGan paper was published July this year!} advances in face synthesis and semantic face editing by using a pretrained StyleGan trained by Nvidia. 
+In this section we will explore very recent\footnote{The InterfaceGan paper was published July this year!} advances in face synthesis and semantic face editing by using a pretrained StyleGan trained by Nvidia.
 
-We can download the weigths of a pretrained stylegan trained by Nvidia directly from their Github.\footnote{\url{https://github.com/NVlabs/stylegan.git}}\cite{stylegan}
+We can download the weights of a pretrained StyleGan trained by Nvidia directly from their Github.\footnote{\url{https://github.com/NVlabs/stylegan.git}}\cite{stylegan}
 
 This model is trained on the full size and resolution version of the FFHQ dataset.
 With the trained generator we can draw samples $z$ from the normal distribution and generate faces $G(x)$ which are near impossible to humans to distinguish from real faces.
@@ -20,7 +20,7 @@ In Figure \ref{StyleGAN-examples} we see eight such samples. We can create as ma
 
 \subsection{Finding the latent space representation of an arbitrary query image.}
 
-Now the pretrained StyleGAN does not contain an encoder network. Therefore there is no way to find a latent space representation of a arbitrary input image out of the box. This means the even though we can generate an image given a latent representation $z$ there is no way to optain the latent representation given an arbitrary query image. 
+Now the pretrained StyleGAN does not contain an encoder network. Therefore there is no way to find a latent space representation of a arbitrary input image out of the box. This means the even though we can generate an image given a latent representation $z$ there is no way to obtain the latent representation given an arbitrary query image.
 
 The paper \textit{Image2StyleGAN: How to Embed Images Into the StyleGAN Latent Space?}\cite{Image2StyleGAN} explicitly investigates this problem.
 In \cite{interfacegan} it is pointed out that there is, a least two different ways of tackling the embedding problem.
@@ -28,19 +28,19 @@ In \cite{interfacegan} it is pointed out that there is, a least two different wa
 \begin{enumerate}
     \item An optimization-based
     approach, which directly optimizes the latent code with fixed generator to minimize the pixel-wise reconstruction error.
-    \item An encoder-based approach, where an independent encoder network is trained to learn the inverse mapping. 
+    \item An encoder-based approach, where an independent encoder network is trained to learn the inverse mapping.
 \end{enumerate}
 
 Here we use a combined apporach \footnote{We use the implementation of a StyleGan encoder available here: \url{https://github.com/Puzer/stylegan-encoder}}
-where we first use a ResNet with is trained to directly predict the latent representation in the StyleGan network given an image. The output of the ResNet model is the first approximation of the embedding. 
+where we first use a ResNet with is trained to directly predict the latent representation in the StyleGan network given an image. The output of the ResNet model is the first approximation of the embedding.
 
-We then proceed to optimise the latent representation using the second apporeach described above. But instead of calculating the loss directly on the pixel-wise reconstruction error we use a pre-trained VGG16 network, where the top part of the netword is cut off,  to transform the query image and the reconstructed image into a high dimensional feature space. The loss is then calculated as a difference between the two images in this feature space instead of directly in pixelspace. We then itteratice optimize the latent representent to minimize this loss using gradient decent.'
+We then proceed to optimize the latent representation using the second apporeach described above. But instead of calculating the loss directly on the pixel-wise reconstruction error we use a pre-trained VGG16 network, where the top part of the network is cut off,  to transform the query image and the reconstructed image into a high dimensional feature space. The loss is then calculated as a difference between the two images in this feature space instead of directly in pixel space. We then iteratively optimize the latent representation to minimize this loss using gradient decent.'
 
-In Figure \ref{stylegan-reconstruction} we see the result of this embedding proedure. In Figure \ref{original} we show the original query images. We choose to embed wikipedia images of Danish politicians. From left to right we see images of Inger Støjberg, Lars Lykke Ramussen, Mette Frederiken and Uffe Elbæk. 
+In Figure \ref{stylegan-reconstruction} we see the result of this embedding procedure. In Figure \ref{original} we show the original query images. We choose to embed wikipedia images of Danish politicians. From left to right we see images of Inger Støjberg, Lars Lykke Rasmussen, Mette Frederiken and Uffe Elbæk.
 
-In Figure \ref{firstguess} we see the first approximation given by the ResNet that is trained to output the latent representation given images from StyleGan. We see that although general features like pose and gender is the same as for the original images, the identity of the person in the images generated from this approximation is clearly different. 
+In Figure \ref{firstguess} we see the first approximation given by the ResNet that is trained to output the latent representation given images from StyleGan. We see that although general features like pose and gender is the same as for the original images, the identity of the person in the images generated from this approximation is clearly different.
 
-In Figure \ref{optim} we see the result of optimizing the latent representations for 300 itterations using the VVG16 netwprk, starting from the latent approximation found by the ResNet Network. We see that the result is convinsingly close to the original image and we only loose a little bit of the finder details, mainly around the hair reagion of the images.
+In Figure \ref{optim} we see the result of optimizing the latent representations for 300 iterations using the VVG16 network, starting from the latent approximation found by the ResNet Network. We see that the result is convincingly close to the original image and we only loose a little bit of the finder details, mainly around the hair region of the images.
 
 \begin{figure}[h!]
     \centering
@@ -122,8 +122,7 @@ for $0 \leq \alpha \leq 1$. This linear interpolation results in images that smo
 % \end{figure}
 
 
-To test the robostness of the embeddings algorithms we also try and find the latent representation of two query images which are not of faces. Comcretely we try to find the latent representation of images of Donald Duck and a ham respectively. We see the results in figure \ref{noface}. 
-
+To test the robustness of this embedding algorithm we also try and find the latent representation of two query images which are not of faces. Concretely we try to find the latent representation of images of Donald Duck and a ham respectively. We see the results in figure \ref{noface}.
 
 \begin{figure}[h!]
     \centering
@@ -144,10 +143,10 @@ To test the robostness of the embeddings algorithms we also try and find the lat
     \label{noface}
 \end{figure}
 
-We see that the reconstruction of the ham is suprisingly good while the reconstruction of Donald Duck is a bit more troubled. 
+We see that the reconstruction of the ham is surprisingly good while the reconstruction of Donald Duck is a bit more troubled.
 
 \subsection{Semantic face editing.}
-In Figure \ref{faceedit} we see the results from doing semantic face editing of the reconstructed images from \ref{stylegan-reconstruction}. By shifting the latent representations in the direction normal to decision boundaries calculated in \cite{interfacegan} we can edit the images by adding smile, glasses and changing the gender of the respective politicians. 
+In Figure \ref{faceedit} we see the results from doing semantic face editing of the reconstructed images from \ref{stylegan-reconstruction}. By shifting the latent representations in the direction normal to decision boundaries calculated in \cite{interfacegan} we can edit the images by adding smile, glasses and changing the gender of the respective politicians.
 
 \begin{figure}[h!]
     \centering
@@ -163,7 +162,7 @@ In Figure \ref{faceedit} we see the results from doing semantic face editing of 
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/uffe-smile}
     \end{subfigure}
-    
+
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/inger-glasses}
     \end{subfigure}
@@ -176,7 +175,7 @@ In Figure \ref{faceedit} we see the results from doing semantic face editing of 
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/uffe-glasses}
     \end{subfigure}
-    
+
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/inger-gender}
     \end{subfigure}
@@ -189,6 +188,6 @@ In Figure \ref{faceedit} we see the results from doing semantic face editing of 
     \begin{subfigure}[b]{0.24\textwidth}
         \includegraphics[width=\textwidth]{fig/stylegan/faceedit/uffe-gender}
     \end{subfigure}
-    \caption{Semantic face editing. Here we edit the embeddings of Danish politicians by adding smile in the first row, addning glasses in the second row and changing the gender in the third row.}
+    \caption{Semantic face editing. Here we edit the embeddings of Danish politicians by adding smile in the first row, adding glasses in the second row and changing the gender in the third row.}
     \label{faceedit}
 \end{figure}
