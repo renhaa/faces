@@ -36,7 +36,7 @@ where we first use a ResNet with is trained to directly predict the latent repre
 
 We then proceed to optimise the latent representation using the second apporeach described above. But instead of calculating the loss directly on the pixel-wise reconstruction error we use a pre-trained VGG16 network, where the top part of the netword is cut off,  to transform the query image and the reconstructed image into a high dimensional feature space. The loss is then calculated as a difference between the two images in this feature space instead of directly in pixelspace. We then itteratice optimize the latent representent to minimize this loss using gradient decent.'
 
-In Figure \ref{stylegan-reconstruction} we see the result of this embedding proedure. In Figure \ref{original} we show the original query images. We chose to embed wikipedia images of Danish politicians. From left to right we see images of Inger Støjberg, Lars Lykke Ramussen, Mette Frederiken and Uffe Elbæk. 
+In Figure \ref{stylegan-reconstruction} we see the result of this embedding proedure. In Figure \ref{original} we show the original query images. We choose to embed wikipedia images of Danish politicians. From left to right we see images of Inger Støjberg, Lars Lykke Ramussen, Mette Frederiken and Uffe Elbæk. 
 
 In Figure \ref{firstguess} we see the first approximation given by the ResNet that is trained to output the latent representation given images from StyleGan. We see that although general features like pose and gender is the same as for the original images, the identity of the person in the images generated from this approximation is clearly different. 
 
